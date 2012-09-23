@@ -1,0 +1,94 @@
+<%
+"""
+index.psp -- an example webpage
+
+DESCRIPTION
+	This is the template for building webpages.  Any code between pairs of 
+	comments like this:
+
+		#--- BEGIN TEMPLATE CODE...
+		#--- ...END TEMPLATE CODE
+	
+	should not need to be modified.
+
+REQUIREMENTS
+	n/a
+
+AUTHOR
+	John Brunelle <john_brunelle@harvard.edu>
+	Harvard FAS Research Computing
+"""
+
+
+#--- BEGIN TEMPLATE CODE...
+
+class BreakOut(Exception): pass
+
+try:
+	try:
+		from lilpsp import config, core, org
+		import time
+
+		req.add_common_vars()
+		
+		msg = "request from ip [%s] from user [%s]" % (req.subprocess_env['REMOTE_ADDR'], core.getUsername(session, req))
+		core.log(msg, session, req)
+		
+		core.sessionCheck(session, req)
+		
+		base_url_dir = os.path.dirname(req.subprocess_env['SCRIPT_URI'])  #e.g. 'https://SERVER/PATH/'
+		base_fs_dir  = os.path.dirname(req.subprocess_env['SCRIPT_FILENAME'])
+
+		req.write(open(os.path.join(base_fs_dir, 'header.html')).read())
+		wrote_header = True
+
+		#--- ...END TEMPLATE CODE
+
+
+		#content goes here
+		#use form.has_key('VARIABLE') and string(form['VARIABLE']) to access form and query string data
+		req.write("Hello, world!")
+
+		#example of how to handle anticipated Exceptions
+		try:
+			#raise Exception("this is an example Exception message")
+			pass
+		except Exception, e:
+			msg = "an example Exception occurred"
+			core.log(msg, session, req, e)
+%>
+			<p>
+			An anticipated error occurred.
+			</p>
+			<p>
+			This is an example of what gets shown to the user.
+			This is for anticipated situations, with something to explain to the user.
+			There is a separate catch-all error handler.
+			</p>
+<%
+			raise BreakOut()
+
+
+	#--- BEGIN TEMPLATE CODE...
+		
+	except BreakOut:
+		pass
+	
+	req.write(open(os.path.join(base_fs_dir, 'footer.html')).read())
+	wrote_footer = True
+except apache.SERVER_RETURN:
+	##if it's re-raised, sessions start over; passing seems wrong but it's the only way I know of to make sessions persist across redirect
+	#raise
+	pass
+except Exception, e:
+	if not ( 'core' in globals() and 'org' in globals() ):
+		raise  #just bailout and let the server handle it (if configured with PythonDebug On, the traceback will be shown to the user)
+	else:
+		msg = "ERROR: uncaught exception when handling user [%s]: %s" % (core.getUsername(session, req), e)
+		core.log(msg, session, req, e)
+		if not 'wrote_header' in globals() and 'base_fs_dir' in globals(): req.write(open(os.path.join(base_fs_dir, 'header.html')).read())
+		req.write(org.errmsg_general(session, req))
+		if not 'wrote_footer' in globals() and 'base_fs_dir' in globals(): req.write(open(os.path.join(base_fs_dir, 'footer.html')).read())
+
+#--- ...END TEMPLATE CODE
+%>
