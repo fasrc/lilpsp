@@ -28,37 +28,37 @@ ORIENTATION AND LAYOUT
 The package will sit somewhere on the filesystem, /PATH/TO/MYSITE/, and 
 therefore look like this:
 
-	/PATH/TO/MYSITE/lilpsp/*.py
-	/PATH/TO/MYSITE/*.psp
-	/PATH/TO/MYSITE/*.html
+/PATH/TO/MYSITE/lilpsp/*.py
+/PATH/TO/MYSITE/*.psp
+/PATH/TO/MYSITE/*.html
 
 By default, the site will log to /var/log/httpd/MYSITE.log.
 
 From the lilpsp python package, it's expected you will want to modify:
-	
-	lilpsp/config.py
-	lilpsp/org.py
+
+    lilpsp/config.py
+    lilpsp/org.py
 
 (see below for details) plus add any other python modules providing specific 
 site functionality.  You will also want to modify:
 
-	header.html
-	footer.html
+    header.html
+    footer.html
 
 as these are designed to be included at the top and bottom of every .psp page.  
 The file login.psp is not intended to be modified; its customizable content is 
-contructed from the above files.
+constructed from the above files.
 
 The rest of your site is up to you.  The file:
 
-	index.psp
+    index.psp
 
 provides the basic example for a dynamic html page.  Content between the 
 `#--- BEGIN TEMPLATE CODE...` and `#--- ...END TEMPLATE CODE` should not need 
 to be modified.  There are also:
-	
-	lilpsp/exampleHandler.py
-	exampleHandlerFailure.psp
+
+    lilpsp/exampleHandler.py
+    exampleHandlerFailure.psp
 
 which provide an example of dynamic creation of non-html content, in this case 
 a png image.  Delete these files if you're not using them.
@@ -72,15 +72,15 @@ Basics
 
 There are two main files designed for tweaking the site.  The first is:
 
-	core.py
+    core.py
 
 This defines basic parameters like where to log, and what type of 
 authentication, if any, to require.  See the comments in the file for details 
 on each option.
 
 The other is:
-	
-	org.py
+
+    org.py
 
 This has the html blurbs used in standard pages (error pages, login page (if 
 used), etc.); tweak these as desired.  There are also methods used for getting 
@@ -118,32 +118,32 @@ APACHE CONFIGURATION
 
 Apache will need something like the following:
 
-	Alias /MYSITE "/PATH/TO/MYSITE/"
-	<Location "/MYSITE">
-			AddHandler mod_python .psp
-			PythonHandler mod_python.psp
-			PythonDebug Off
-			PythonPath "['/PATH/TO/MYSITE']+sys.path"
+    Alias /MYSITE "/PATH/TO/MYSITE/"
+    <Location "/MYSITE">
+        AddHandler mod_python .psp
+        PythonHandler mod_python.psp
+        PythonDebug Off
+        PythonPath "['/PATH/TO/MYSITE']+sys.path"
 
-			##cookie path -- use the first case for mod_python >= 3.3, the second for earlier
-        	#PythonOption mod_python.session.application_path /MYSITE
-			PythonOption ApplicationPath /MYSITE
-			
-			DirectoryIndex index.psp
-	</Location>
+        ##cookie path -- use the first case for mod_python >= 3.3, the second for earlier
+        #PythonOption mod_python.session.application_path /MYSITE
+        PythonOption ApplicationPath /MYSITE
+
+        DirectoryIndex index.psp
+    </Location>
 
 Set PythonDebug On if you wish tracebacks to be delivered to the browser when 
 uncaught exceptions occur (almost all exceptions are caught, but there is 
-always the possiblity).
+always the possibility).
 
 To use exampleHandler.py and exampleHandlerFailure.py, as an example of 
 implementing direct handlers for non-html content, apache will need something 
 like the following:
 
-	<Location "/MYSITE/example.png">
-			SetHandler mod_python
-			PythonHandler lilpsp.exampleHandler::dynamicPNG
-	</Location>
+    <Location "/MYSITE/example.png">
+        SetHandler mod_python
+        PythonHandler lilpsp.exampleHandler::dynamicPNG
+    </Location>
 
 When setting up multiple sites using lilpsp, I've had sites get confused about 
 which .py files its using -- i.e. one site would be using the other's, as if 
@@ -178,5 +178,5 @@ Miscellaneous
 
 It is assumed that all .psp pages are in the same directory and referred to by 
 the same base url, and all dynamical non-html content is similarly represented 
-by a filename off that base url.  For example, the the login.psp redirection 
+by a filename off that base url.  For example, the login.psp redirection 
 assumes it's a sibling file with whatever calls it.
