@@ -69,7 +69,7 @@ def dynamicPNG(req):
 		#raise
 		raise
 	except Exception, e:
-		if not ( 'session' in globals() and 'core' in globals() and 'base_url_dir' in globals() ):
+		if not ( 'core' in globals() and 'session' in locals() and 'base_url_dir' in locals() ):
 			raise  #just bailout and let the server handle it (if configured with PythonDebug On, the traceback will be shown to the user)
 		else:
 			msg = "ERROR: uncaught exception when handling user [%s]: %s" % (core.getUsername(session, req), e)
