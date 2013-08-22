@@ -125,9 +125,11 @@ Apache will need something like the following:
         PythonDebug Off
         PythonPath "['/PATH/TO/MYSITE']+sys.path"
 
-        ##cookie path -- use the first case for mod_python >= 3.3, the second for earlier
-        #PythonOption mod_python.session.application_path /MYSITE
-        PythonOption ApplicationPath /MYSITE
+        ##cookie path
+		##use the second case for mod_python >= 3.3
+		##use the first for earlier versions
+        #PythonOption ApplicationPath /MYSITE
+        PythonOption mod_python.session.application_path /MYSITE
 
         DirectoryIndex index.psp
     </Location>
