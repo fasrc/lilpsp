@@ -32,7 +32,7 @@ therefore look like this:
 /PATH/TO/MYSITE/*.psp
 /PATH/TO/MYSITE/*.html
 
-By default, the site will log to /var/log/httpd/MYSITE.log.
+By default, the site will log to /var/tmp/MYSITE.log.
 
 From the lilpsp python package, it's expected you will want to modify:
 
