@@ -18,11 +18,16 @@ AUTHOR
 import os, re
 
 #LOG_FILE -- the absolute path of the log file to use
-#The apache user, or whatever user under which the web server is running, must 
-#be able to write to it, or create if it does not exist.  This default is to 
-#take the name of the directory containing all the psp, html, and the python 
-#package, and use that as the name of the log file.
-LOG_FILE = '/var/log/httpd/%s.log' % os.path.basename(os.path.normpath(os.path.join(os.path.dirname(__file__),'..')))
+#The apache user (or whatever user under which the web server is running) must 
+#be able to write to it, or create if it does not exist (see also LOG_FILE_MODE 
+#below).  This default is to take the name of the directory containing all the 
+#psp, html, and the lilpsp python package, and use that as the base name of the 
+#log file.  Note that any failures writing to this log are ignored.
+LOG_FILE = '/var/tmp/%s.log' % os.path.basename(os.path.normpath(os.path.join(os.path.dirname(__file__),'..')))
+
+#LOG_FILE_MODE -- the permissions of the log file, if this creates it
+#This has no effect if the file already exists.
+LOG_FILE_MODE = 0600
 
 #DEBUG -- boolean for whether or not to include full details in Exceptions and log messages
 #WARNING: True may cause tracebacks, shell command output, and other secrets to 

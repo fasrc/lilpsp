@@ -52,6 +52,9 @@ def log(msg, session=None, req=None, e=None):
 			tbstr = ''.join(traceback.format_exception(*sys.exc_info())).strip()
 			for line in tbstr.split('\n'):
 				open(config.LOG_FILE, 'a').write("%sDEBUG: %s\n" % (prefix, line))
+		
+		if not os.path.exists(config.LOG_FILE):
+			os.close(os.open(config.LOG_FILE, os.O_WRONLY|os.O_CREAT, config.LOG_FILE_MODE))
 		open(config.LOG_FILE, 'a').write("%s%s\n" % (prefix, msg))
 	except Exception:
 		pass
