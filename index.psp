@@ -36,7 +36,7 @@ try:
 		
 		core.sessionCheck(session, req)
 		
-		base_url_dir = os.path.dirname(req.subprocess_env['SCRIPT_URI'])  #e.g. 'https://SERVER/PATH/'
+		base_url_dir = os.path.dirname(req.subprocess_env['REQUEST_URI'].split('?',1)[0])  #e.g. /PATH, of 'https://SERVER/PATH?FOO=BAR'
 		base_fs_dir  = os.path.dirname(req.subprocess_env['SCRIPT_FILENAME'])
 
 		req.write(open(os.path.join(base_fs_dir, 'header.html')).read())

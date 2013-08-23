@@ -33,7 +33,7 @@ def dynamicPNG(req):
 		
 		req.add_common_vars()
 
-		base_url_dir = os.path.dirname(req.subprocess_env['SCRIPT_URI'])  #e.g. 'https://SERVER/PATH/''
+		base_url_dir = os.path.dirname(req.subprocess_env['REQUEST_URI'].split('?',1)[0])  #e.g. /PATH, of 'https://SERVER/PATH?FOO=BAR'
 		base_fs_dir  = os.path.dirname(req.subprocess_env['SCRIPT_FILENAME'])
 		
 		msg = "request from ip [%s] from user [%s]" % (req.subprocess_env['REMOTE_ADDR'], core.getUsername(session, req))

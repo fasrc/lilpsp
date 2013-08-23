@@ -75,7 +75,7 @@ def html_login_successful(session, req):
 
 	Users only see this if they directly hit the login.psp url instead of getting redirected there, since in the latter case they will be redirected to their original request rather than see the page that displays this.
 	"""
-	base_url_dir = os.path.dirname(req.subprocess_env['SCRIPT_URI'])
+	base_url_dir = os.path.dirname(req.subprocess_env['REQUEST_URI'].split('?',1)[0])
 	return """\
 <p>
 Login successful.

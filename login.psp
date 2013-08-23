@@ -32,7 +32,7 @@ try:
 		msg = "request from ip [%s] from user [%s]" % (req.subprocess_env['REMOTE_ADDR'], core.getUsername(session, req))
 		core.log(msg, session, req)
 		
-		base_url_dir = os.path.dirname(req.subprocess_env['SCRIPT_URI'])  #e.g. 'https://SERVER/PATH/'
+		base_url_dir = os.path.dirname(req.subprocess_env['REQUEST_URI'].split('?',1)[0])  #e.g. /PATH, of 'https://SERVER/PATH?FOO=BAR'
 		base_fs_dir  = os.path.dirname(req.subprocess_env['SCRIPT_FILENAME'])
 
 		#--- ...END TEMPLATE CODE
@@ -51,7 +51,7 @@ try:
 		login_failed = False
 
 		#handle posts to self (the actual user authentication step)
-		if req.headers_in.has_key('Referer') and req.headers_in['Referer'].split('?')[0]==req.subprocess_env['SCRIPT_URI']:
+		if req.headers_in.has_key('Referer') and req.headers_in['Referer'].split('?')[0].endswith(req.subprocess_env['REQUEST_URI'].split('?')[0]):
 			if form.has_key('username') and form.has_key('password'):
 				username = str(form['username']).strip()
 				password = str(form['password']).strip()
