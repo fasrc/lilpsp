@@ -37,7 +37,8 @@ try:
 
 		#--- ...END TEMPLATE CODE
 
-		
+
+
 		#--- sanity check
 
 		if config.AUTH_TYPE!='FORM':
@@ -51,7 +52,7 @@ try:
 		login_failed = False
 
 		#handle posts to self (the actual user authentication step)
-		if req.headers_in.has_key('Referer') and req.headers_in['Referer'].split('?')[0].endswith(req.subprocess_env['REQUEST_URI'].split('?')[0]):
+		if req.subprocess_env['REQUEST_METHOD']=='POST' and req.headers_in.has_key('Referer') and req.headers_in['Referer'].split('?')[0].endswith(req.subprocess_env['REQUEST_URI'].split('?')[0]):
 			if form.has_key('username') and form.has_key('password'):
 				username = str(form['username']).strip()
 				password = str(form['password']).strip()
@@ -86,11 +87,19 @@ try:
 			logged_out = True
 
 
-		#--- begin page construction
-		
+
+		#--- BEGIN TEMPLATE CODE...
+
 		req.write(open(os.path.join(base_fs_dir, 'header.html')).read())
 		wrote_header = True
-		
+
+		##(no logout link on the login page, since it doesn't make sense)
+		#if config.AUTH_TYPE=='FORM': req.write(org.html_logout_link(session, req))
+
+		#--- ...END TEMPLATE CODE
+
+
+
 		if logged_in:
 			#(if code gets here, it means there was no redirect to follow)
 			req.write(org.html_login_successful(session, req))

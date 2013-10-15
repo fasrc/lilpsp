@@ -39,6 +39,19 @@ try:
 		base_url_dir = os.path.dirname(req.subprocess_env['REQUEST_URI'].split('?',1)[0])  #e.g. /PATH, of 'https://SERVER/PATH?FOO=BAR'
 		base_fs_dir  = os.path.dirname(req.subprocess_env['SCRIPT_FILENAME'])
 
+		#--- ...END TEMPLATE CODE
+
+
+
+		#pre-content code goes here (while you can still redirect)
+		#see login.psp for a test of posting to self
+		#in other cases, after form processing, you likely want also want to redirect to self so client refresh does not resubmit:
+		#	util.redirect(req, req.subprocess_env['REQUEST_URI'].split('?',1)[0])
+
+
+
+		#--- BEGIN TEMPLATE CODE...
+		
 		req.write(open(os.path.join(base_fs_dir, 'header.html')).read())
 		wrote_header = True
 
@@ -48,7 +61,7 @@ try:
 
 
 
-		#content goes here
+		#main content goes here
 		#use form.has_key('VARIABLE') and string(form['VARIABLE']) to access form and query string data
 		req.write("Hello, world!")
 
