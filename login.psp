@@ -164,7 +164,7 @@ except Exception, e:
 	if not ( 'core' in globals() and 'org' in globals() ):
 		raise  #just bailout and let the server handle it (if configured with PythonDebug On, the traceback will be shown to the user)
 	else:
-		msg = "ERROR: uncaught exception when handling user [%s]: %s" % (core.getUsername(session, req), e)
+		msg = "ERROR: exception when handling user [%s]: %s" % (core.getUsername(session, req), e)
 		core.log(msg, session, req, e)
 		if not 'wrote_header' in globals() and 'base_fs_dir' in globals(): req.write(open(os.path.join(base_fs_dir, 'header.html')).read())
 		req.write(org.errmsg_general(session, req))

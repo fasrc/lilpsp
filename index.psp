@@ -45,28 +45,44 @@ try:
 		#--- ...END TEMPLATE CODE
 
 
+
 		#content goes here
 		#use form.has_key('VARIABLE') and string(form['VARIABLE']) to access form and query string data
 		req.write("Hello, world!")
 
-		#example of how to handle anticipated Exceptions
+
+		#--- examples of how to handle Exceptions
+
+		#If you don't want to log anything specific about it (e.g. the 
+		#exception message and traceback are enough, or explicitly raising 
+		#something as a sanity check), just let it happen.  The catch-all 
+		#handler below will do all the work.
+
+		#Otherwise:
 		try:
-			#raise Exception("this is an example Exception message")
+			#...code for which you want to handle Exceptions...
 			pass
 		except Exception, e:
-			msg = "an example Exception occurred"
+			#--- pick one of the following styles:
+
+			#choice 1 -- you have something meaningful to explain to the user (log it, explain it, and wrap-up)
+			msg = "...something about the situation for the log..."
 			core.log(msg, session, req, e)
 %>
 			<p>
-			An anticipated error occurred.
+			...summary for user, possibly using <%= org.err_str %>...
 			</p>
 			<p>
-			This is an example of what gets shown to the user.
-			This is for anticipated situations, with something to explain to the user.
-			There is a separate catch-all error handler.
+			...details for user...
 			</p>
 <%
 			raise BreakOut()
+
+			#choice 2 -- just want to log some comments, then let the generic catch-all kick in
+			msg = "...something about the situation for the log..."
+			core.log(msg, session, req)  #catch-all below will log e's details; if e is enough
+			raise
+
 
 
 	#--- BEGIN TEMPLATE CODE...
@@ -84,7 +100,7 @@ except Exception, e:
 	if not ( 'core' in globals() and 'org' in globals() ):
 		raise  #just bailout and let the server handle it (if configured with PythonDebug On, the traceback will be shown to the user)
 	else:
-		msg = "ERROR: uncaught exception when handling user [%s]: %s" % (core.getUsername(session, req), e)
+		msg = "ERROR: exception when handling user [%s]: %s" % (core.getUsername(session, req), e)
 		core.log(msg, session, req, e)
 		if not 'wrote_header' in globals() and 'base_fs_dir' in globals(): req.write(open(os.path.join(base_fs_dir, 'header.html')).read())
 		req.write(org.errmsg_general(session, req))
