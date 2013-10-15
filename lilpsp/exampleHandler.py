@@ -68,7 +68,7 @@ def dynamicPNG(req):
 		else:
 			msg = "ERROR: exception when handling user [%s]: %s" % (core.getUsername(session, req), e)
 			core.log(msg, session, req, e)
-			req.internal_redirect(os.path.join(base_url_dir, '..', 'exampleHandlerFailure.psp'))
+			req.internal_redirect(os.path.join(base_url_dir, 'exampleHandlerFailure.psp'))
 			return apache.OK  #(not sure if this does anything)
 	
 	#--- ...END TEMPLATE CODE
