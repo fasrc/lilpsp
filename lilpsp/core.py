@@ -13,8 +13,10 @@ REQUIREMENTS
 	uuencode, if using sendEmail() to sent attachments.
 
 AUTHOR
-	John Brunelle <john_brunelle@harvard.edu>
+	Copyright (c) 2011-2013
 	Harvard FAS Research Computing
+	John Brunelle <john_brunelle@harvard.edu>
+	All right reserved.
 """
 
 import sys, os, time, subprocess, urllib, traceback
