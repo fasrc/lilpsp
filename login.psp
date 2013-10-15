@@ -60,6 +60,7 @@ try:
 					if username=='': raise Exception("username cannot be empty")
 					if password=='': raise Exception("password cannot be empty")
 					org.authenticateUser(session, req, username, password)
+					del password
 				except Exception, e:
 					session.invalidate()  #(this is done below, too)
 					session.delete()
