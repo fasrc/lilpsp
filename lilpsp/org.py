@@ -102,10 +102,7 @@ Logout successful.
 """
 
 def html_logout_link(session, req):
-	"""html to use as a logout link
-	
-	Note that this is not part of any page template by default, you must actively choose to use it.
-	"""
+	"""html to use as a logout link"""
 	if config.AUTH_TYPE!='FORM': raise Exception("login/logout only makes sense for config.AUTH_TYPE=='FORM'")
 	return """\
 <a style="float:right;" href="login.psp">logout</a>
