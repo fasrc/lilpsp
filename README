@@ -126,8 +126,8 @@ Apache will need something like the following:
         PythonPath "['/PATH/TO/MYSITE']+sys.path"
 
         ##cookie path
-		##use the second case for mod_python >= 3.3
-		##use the first for earlier versions
+        ##use the second case for mod_python >= 3.3
+        ##use the first for earlier versions
         #PythonOption ApplicationPath /MYSITE
         PythonOption mod_python.session.application_path /MYSITE
 
@@ -137,6 +137,11 @@ Apache will need something like the following:
 Set PythonDebug On if you wish tracebacks to be delivered to the browser when 
 uncaught exceptions occur (almost all exceptions are caught, but there is 
 always the possibility).
+
+Note that if you're aliasing / and not a sub-path, there are things like 
+/cgi-bin, /icons, and /error in httpd.conf that apache will warn are now 
+overridden (involving the message "will probably never match because it 
+overlaps an earlier Alias").
 
 To use exampleHandler.py and exampleHandlerFailure.py, as an example of 
 implementing direct handlers for non-html content, apache will need something 
