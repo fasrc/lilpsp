@@ -36,7 +36,8 @@ try:
 		
 		core.sessionCheck(session, req)
 		
-		base_url_dir = os.path.dirname(req.subprocess_env['REQUEST_URI'].split('?',1)[0])  #e.g. /PATH, of 'https://SERVER/PATH?FOO=BAR'
+		base_url_path = req.subprocess_env['REQUEST_URI'].split('?',1)[0]  #e.g. /PATH/FILENAME.psp, of 'https://SERVER/PATH/FILENAME.psp?FOO=BAR'
+		base_url_dir = os.path.dirname(base_url_path)  #e.g. /PATH, of 'https://SERVER/PATH/FILENAME.psp?FOO=BAR'
 		base_fs_dir  = os.path.dirname(req.subprocess_env['SCRIPT_FILENAME'])
 
 		#--- ...END TEMPLATE CODE
@@ -46,7 +47,7 @@ try:
 		#pre-content code goes here (while you can still redirect)
 		#see login.psp for a test of posting to self
 		#in other cases, after form processing, you likely want also want to redirect to self so client refresh does not resubmit:
-		#	util.redirect(req, req.subprocess_env['REQUEST_URI'].split('?',1)[0])
+		#	util.redirect(req, base_url_path)
 
 
 
